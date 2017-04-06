@@ -73,6 +73,14 @@ public abstract class Monster {
     return lastPlayed;
   }
 
+  public void delete() {
+   try(Connection con = DB.sql2o.open()) {
+   String sql = "DELETE FROM monsters WHERE id = :id;";
+   con.createQuery(sql)
+     .addParameter("id", this.id)
+     .executeUpdate();
+   }
+ }
 
   @Override
   public boolean equals(Object otherMonster){
@@ -91,7 +99,7 @@ public abstract class Monster {
       this.id = (int) con.createQuery(sql, true)
         .addParameter("name", this.name)
         .addParameter("personId", this.personId)
-        .addParameter("type", type) 
+        .addParameter("type", type)
         .executeUpdate()
         .getKey();
     }
